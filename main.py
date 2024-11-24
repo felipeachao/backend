@@ -1,15 +1,8 @@
 import os
-import asyncio
-import zipfile
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from yt_dlp import YoutubeDL
-from tempfile import TemporaryDirectory
-from typing import List
 from pydantic import BaseModel
-from fastapi.responses import StreamingResponse
-import aiohttp  # Adicione esta importação
 import yt_dlp
 
 app = FastAPI()

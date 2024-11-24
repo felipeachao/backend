@@ -39,12 +39,15 @@ class VideoRequest(BaseModel):
 async def download_video(request: VideoRequest):
     url = request.url  # Obtém a URL do corpo da requisição
 
+    cookies_path = "/etc/secrets/cookies.txt"
+
     # Configuração do yt-dlp para baixar o vídeo
     ydl_opts = {
         'format': 'best',  # Melhor qualidade
         'outtmpl': os.path.join(TMP_DIR, '%(title)s.%(ext)s'),  # Salvar com o nome do vídeo
         'quiet': True,  # Para evitar logs no terminal
-        'noplaylist': True,  # Para não baixar listas de reprodução
+        'noplaylist': True,  # Para não baixar listas de reprodução,
+        'cookies': cookies_path,  # Usar cookies do arquivo
     }
 
     try:

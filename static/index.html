@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baixar Vídeo do YouTube</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #download-link {
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Baixar Vídeo do YouTube</h1>
+        <input type="text" id="video-url" placeholder="Cole a URL do vídeo do YouTube" />
+        <button onclick="downloadVideo()">Baixar Vídeo</button>
+
+        <div id="download-link">
+            <p>Seu vídeo está pronto para download! <a id="video-download-link" href="" download>Baixar</a></p>
+        </div>
+    </div>
+
+    <script>
+        async function downloadVideo() {
+            const url = document.getElementById("video-url").value;
+
+            if (!url) {
+                alert("Por favor, insira uma URL válida.");
+                return;
+            }
+
+            const response = await fetch("http://127.0.0.1:8000/download", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ url: url }),
+            });
+
+            if (!response.ok) {
+                alert("Erro ao baixar o vídeo.");
+                return;
+            }
+
+            const data = await response.blob();
+            const downloadUrl = URL.createObjectURL(data);
+
+            // Exibe o link para download
+            const downloadLink = document.getElementById("video-download-link");
+            downloadLink.href = downloadUrl;
+            downloadLink.style.display = "inline";  // Torna o link visível
+            document.getElementById("download-link").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>

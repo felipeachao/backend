@@ -2,10 +2,20 @@ import os
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import yt_dlp
 
 app = FastAPI()
+
+# Configuração CORS para permitir solicitações de qualquer origem (ou configure conforme necessário)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Aceitar requisições de qualquer origem. Para segurança, substitua por uma lista de domínios específicos em produção.
+    allow_credentials=True,
+    allow_methods=["*"],  # Permitir todos os métodos HTTP
+    allow_headers=["*"],  # Permitir todos os cabeçalhos
+)
 
 # Servir arquivos estáticos (HTML, CSS, JS)
 app.mount("/static", StaticFiles(directory="static"), name="static")

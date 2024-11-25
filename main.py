@@ -41,13 +41,19 @@ async def download_video(request: VideoRequest):
 
     cookies_path = "/etc/secrets/cookies.txt"
 
+    visitor_data = os.getenv("YT_VISITOR_DATA")
+
     # Configuração do yt-dlp para baixar o vídeo
     ydl_opts = {
         'format': 'best',  # Melhor qualidade
         'outtmpl': os.path.join(TMP_DIR, '%(title)s.%(ext)s'),  # Salvar com o nome do vídeo
         'quiet': True,  # Para evitar logs no terminal
         'noplaylist': True,  # Para não baixar listas de reprodução,
-        'cookies': cookies_path,  # Usar cookies do arquivo
+        'cookies': cookies_path,  # Usar cookies do arquivo,
+                'extractor-args': {
+            'youtube': {
+                'visitor_data': visitor_data,  # Passar visitor_data aqui
+            },}
     }
 
     try:
